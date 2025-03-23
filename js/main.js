@@ -1,0 +1,174 @@
+///////////
+////////////
+
+// settings box
+function initializeSettingsToggle() {
+  let settingsBox = document.querySelector(".settings-box .toggle-settings");
+  settingsBox.addEventListener("click", () => {
+    document.querySelector(".settings-box").classList.toggle("open");
+    document
+      .querySelector(".settings-box .fa-gear")
+      .classList.toggle("fa-spin");
+  });
+}
+initializeSettingsToggle();
+
+function setMainColor() {
+  function removeActiveColors() {
+    document.querySelectorAll(".colors-list li").forEach((el) => {
+      el.classList.remove("active");
+    });
+  }
+
+  let localColor = localStorage.getItem("MainColor");
+  if (localColor) {
+    document.documentElement.style.setProperty("--main-color", localColor);
+    removeActiveColors();
+    const activeElement = document.querySelector(
+      `[data-color="${localColor}"]`
+    );
+    if (activeElement) {
+      activeElement.classList.add("active");
+    }
+  }
+  // switch colors
+  let colorsLi = document.querySelector(".colors-list");
+  for (let i = 0; i < colorsLi.children.length; i++) {
+    const li = colorsLi.children[i];
+    li.addEventListener("click", (e) => {
+      // remove active from all
+      removeActiveColors();
+
+      li.classList.add("active");
+
+      document.documentElement.style.setProperty(
+        "--main-color",
+        `${li.dataset.color}`
+      );
+
+      localStorage.setItem("MainColor", li.dataset.color);
+    });
+  }
+  //swtich random background options
+  let randomBackEl = document.querySelectorAll(".random-backgrounds span");
+  randomBackEl.forEach((span) => {
+    span.addEventListener("click", (e) => {
+      e.target.parentElement.querySelectorAll(".active").forEach((el) => {
+        el.classList.remove("active");
+      });
+      e.target.classList.add("active");
+      let randomize = e.target.classList.contains("yes");
+      changeBackground(randomize);
+    });
+  });
+}
+setMainColor();
+
+//change background
+let BackgroundInterval = 0;
+
+function changeBackground(randomize) {
+  if (randomize) {
+    if (BackgroundInterval) return; // Prevent multiple intervals
+    BackgroundInterval = setInterval(() => {
+      let randomNumber = Math.floor(Math.random() * 5) + 1;
+      document.querySelector(
+        ".landing-page"
+      ).style.cssText = `background-image:url(../imgs/0${randomNumber}.jpg)`;
+    }, 5000);
+    localStorage.setItem("randomizeBack", true);
+  } else {
+    clearInterval(BackgroundInterval);
+    BackgroundInterval = 0;
+    // localStorage.removeItem("randomizeBack");
+    localStorage.setItem("randomizeBack", false);
+  }
+}
+
+if (localStorage.getItem("randomizeBack") === "true") {
+  changeBackground(true);
+  document.querySelectorAll(".random-backgrounds span").forEach((el) => {
+    el.classList.remove("active");
+  });
+  document.querySelector(`[data-background=yes`).classList.add("active");
+} else {
+  changeBackground(false);
+  document.querySelectorAll(".random-backgrounds span").forEach((el) => {
+    el.classList.remove("active");
+  });
+  document.querySelector(`[data-background=no`).classList.add("active");
+}
+
+function elementsOnScroll() {
+  // select skills selector
+
+  let ourSkills = document.querySelector(".skills");
+
+  window.onscroll = function () {
+    //skill offset top
+    let skillsOffsetTop = ourSkills.offsetTop;
+    //skills outer height
+    let skillsOuterHeight = ourSkills.offsetHeight;
+    // window height
+    let windowHeight = this.innerHeight;
+    //window ScrollTop
+    let windowScrollTop = this.pageYOffset;
+
+    if (windowScrollTop > skillsOffsetTop + skillsOuterHeight - windowHeight) {
+      let allSkills = document.querySelectorAll(
+        ".skill-box .skill-progress span"
+      );
+      allSkills.forEach((skill) => {
+        skill.style.width = skill.dataset.progress;
+      });
+    }
+  };
+}
+elementsOnScroll();
+
+function popUpOnImages() {
+  // create popup with the image
+  let ourGallery = document.querySelectorAll(".gallery img");
+
+  ourGallery.forEach((img) => {
+    img.addEventListener("click", (e) => {
+      //create overlay element
+      let overlay = document.createElement("div");
+      overlay.className = "popup-overlay";
+      overlay.addEventListener("click", (e) => {
+        document.querySelector(".popup-box").remove();
+        e.target.remove();
+      });
+      document.body.appendChild(overlay);
+
+      // create popup box
+      let popupBox = document.createElement("div");
+      popupBox.className = "popup-box";
+      //heading
+      if (img.alt !== "") {
+        let imgHeading = document.createElement("h3");
+        let text = document.createTextNode(img.alt);
+        imgHeading.appendChild(text);
+
+        popupBox.appendChild(imgHeading);
+      }
+      // create image
+      let popupImg = document.createElement("img");
+      popupImg.src = img.src;
+      // popupImg.style.maxWidth = "100%";
+      popupBox.appendChild(popupImg);
+      document.body.appendChild(popupBox);
+      // create close button
+      let closeButton = document.createElement("span");
+      closeButton.innerHTML = "X";
+      closeButton.className = "close-button";
+      closeButton.addEventListener("click", (e) => {
+        popupBox.remove();
+        overlay.remove();
+      });
+
+      popupBox.appendChild(closeButton);
+    });
+  });
+}
+popUpOnImages();
