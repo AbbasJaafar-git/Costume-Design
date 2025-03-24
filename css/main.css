@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 :root {
-  --main-color: #ff8900;
+  --main-color: #ff9800;
   --main-padding: 15px;
   --section-padding: 50px;
 }
@@ -15,7 +15,6 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 .container {
-  width: 1170px;
   padding-left: var(--main-padding);
   padding-right: var(--main-padding);
   margin: auto;
@@ -24,6 +23,29 @@ ul {
   list-style: none;
   margin: 0;
 }
+/* grid system  */
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+/* grid system  */
+
 /* Start Settings box */
 .settings-box {
   position: fixed;
@@ -105,14 +127,16 @@ ul {
 .settings-box .option-box span.active {
   opacity: 1;
 }
-.settings-box button {
+.settings-box .reset-options {
   background-color: #f44336;
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 4px;
   font-size: 14px;
   width: 90%;
   margin: 10px auto;
   border: none;
+  display: block;
+  color: #fff;
   font-size: 18px;
   cursor: pointer;
 }
@@ -139,7 +163,6 @@ ul {
   position: relative;
 }
 .nav-bullets .bullet .tooltip {
-  /* visibility: hidden; */
   position: absolute;
   right: 34px;
   /* transform: translateY(-50%); */
@@ -151,6 +174,7 @@ ul {
   color: #fff;
   cursor: default;
   pointer-events: none;
+  visibility: hidden;
 }
 .nav-bullets .bullet .tooltip::before {
   content: "";
@@ -161,7 +185,7 @@ ul {
   border: 10px solid #fff;
   border-color: transparent transparent transparent #fff;
 }
-.nav-bullets .bullet .tooltip:hover {
+.nav-bullets .bullet:hover .tooltip {
   visibility: visible;
 }
 
@@ -585,3 +609,88 @@ ul {
 }
 
 /* End Testimonials  */
+
+/* Start Contact Us  */
+.contact {
+  padding-top: var(--section-padding);
+  padding-top: var(--section-padding);
+  background-image: url(../imgs/contact.png);
+  background-size: cover;
+  position: relative;
+  min-height: 600px;
+}
+.contact .overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.contact .container {
+  position: relative;
+}
+.contact h2 {
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--main-color);
+  margin: 0 0 50px;
+  text-align: center;
+}
+.contact form {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  max-width: 800px;
+  margin: auto;
+}
+@media (max-width: 767px) {
+  .contact form {
+    flex-direction: column;
+  }
+}
+.contact form .left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.contact form input,
+.contact textarea {
+  padding: 10px;
+  height: 40px;
+  border: 1px solid #ccc;
+  background-color: rgba(218, 218, 218, 0.2);
+  outline: none;
+}
+.contact form input:first-child:focus {
+  border-color: transparent var(--main-color) var(--main-color) transparent;
+}
+.contact form input:not(:first-child):focus {
+  border-color: var(--main-color) var(--main-color) var(--main-color)
+    transparent;
+}
+.contact form .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 1;
+}
+.contact form .right textarea {
+  font-size: 20px;
+  height: 150px;
+}
+.contact form .right textarea:focus {
+  border-color: transparent transparent var(--main-color) var(--main-color);
+}
+.contact form .right input[type="submit"] {
+  font-size: 20px;
+  height: 20%;
+  background-color: var(--main-color);
+  border: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* End Contact Us  */
