@@ -210,6 +210,7 @@ ul {
   justify-content: space-between;
   color: #fff;
   padding: 30px 0;
+  z-index: 5;
 }
 .header-area .logo {
   font-size: 20px;
@@ -262,6 +263,11 @@ ul {
   font-weight: bold;
   margin: 0 0 15px;
 }
+@media (max-width: 575px) {
+  .landing-page .introduction-text h1 {
+    font-size: 25px;
+  }
+}
 .landing-page .introduction-text h1 span {
   color: var(--main-color);
 }
@@ -310,8 +316,13 @@ ul {
 .about-us {
   padding-top: var(--section-padding);
   padding-bottom: var(--section-padding);
-
   display: flex;
+}
+@media (max-width: 767px) {
+  .about-us {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 .about-us .info-box {
   flex: 1;
@@ -360,6 +371,15 @@ ul {
   width: 140px;
   text-align: center;
   line-height: 30px;
+}
+@media (max-width: 767px) {
+  .skills .skill-box {
+    display: block;
+  }
+  .skills .skill-name {
+    width: 100%;
+    margin-bottom: 5px;
+  }
 }
 .skills .skill-progress {
   height: 30px;
@@ -489,6 +509,21 @@ ul {
 .timeline .timeline-content .left {
   float: left;
 }
+@media (max-width: 767px) {
+  .timeline .timeline-content .left,
+  .timeline .timeline-content .right {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .timeline .timeline-content .left::before,
+  .timeline .timeline-content .right::before {
+    display: none;
+  }
+  .timeline .timeline-content .left .content::before,
+  .timeline .timeline-content .right .content::before {
+    display: none;
+  }
+}
 .timeline .timeline-content .left::before {
   right: -35px;
 }
@@ -557,7 +592,7 @@ ul {
 }
 .features .container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 40px;
 }
 .features .feat-box {
@@ -627,6 +662,15 @@ ul {
   padding: 20px;
   background-color: #fff;
   z-index: 4;
+}
+@media (max-width: 767px) {
+  .testimonials h2 {
+    text-align: center;
+  }
+  .testimonials .ts-box {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 .testimonials .ts-box:not(:last-child) {
   margin-right: 1%;

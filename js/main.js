@@ -178,9 +178,11 @@ function scrollOnClick(elements) {
   elements.forEach((element) => {
     element.addEventListener("click", (e) => {
       e.preventDefault();
-      document.querySelector(`${e.target.dataset.section}`).scrollIntoView({
-        behavior: "smooth",
-      });
+      let temp = document.querySelector(`${e.target.dataset.section}`);
+      if (temp)
+        temp.scrollIntoView({
+          behavior: "smooth",
+        });
     });
   });
 }
@@ -237,20 +239,25 @@ function resetOptions() {
 
 resetOptions();
 
-//test
-let toggleMenu = document.querySelector(".header-area .links");
+// manage showing and hiding links container
+function toggleLinks() {
+  let toggleBtn = document.querySelector(".header-area .toggle-menu");
+  let tLinks = document.querySelector(".header-area .links");
 
-document
-  .querySelector(".header-area .toggle-menu")
-  .addEventListener("click", (e) => {
-    toggleMenu.classList.toggle("open");
+  toggleBtn.addEventListener("click", (e) => {
+    tLinks.classList.toggle("open");
+    e.stopPropagation(); // Prevent document click when toggle is clicked
   });
-document.querySelector(".landing-page").addEventListener("click", (e) => {
-  console.log(e.target.className);
-  if (
-    !e.target.classList.contains("toggle-menu") ||
-    !e.target.classList.contains("links") ||
-    !e.target.tagName === "span"
-  )
-    toggleMenu.classList.remove("open");
-});
+
+  document.addEventListener("click", (e) => {
+    // stop the event if the clicked element is the buttong or links or li
+    if (
+      e.target !== toggleBtn &&
+      e.target !== tLinks &&
+      e.target.parentElement !== tLinks
+    ) {
+      tLinks.classList.remove("open");
+    }
+  });
+}
+toggleLinks();
