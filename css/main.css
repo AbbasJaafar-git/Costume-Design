@@ -216,9 +216,6 @@ ul {
   font-size: 20px;
   font-weight: bold;
 }
-.header-area .links-container {
-  /* display: none; */
-}
 .header-area .links {
   display: flex;
   justify-content: space-between;
@@ -784,3 +781,11 @@ ul {
 }
 
 /* End Contact Us  */
+/* <!-- Start  Footer */
+.footer {
+  background-color: #333;
+  color: #eee;
+  padding: 20px;
+  text-align: center;
+}
+/* <!-- Start  Footer --> */

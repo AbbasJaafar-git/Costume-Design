@@ -1,68 +1,113 @@
 ///////////
 ////////////
 
-// settings box
-function initializeSettingsToggle() {
-  let settingsBox = document.querySelector(".settings-box .toggle-settings");
-  settingsBox.addEventListener("click", () => {
-    document.querySelector(".settings-box").classList.toggle("open");
-    document
-      .querySelector(".settings-box .fa-gear")
-      .classList.toggle("fa-spin");
-  });
-}
-initializeSettingsToggle();
-// remove active classe function
-function handleActiveClass(e) {
-  e.target.parentElement.querySelectorAll(".active").forEach((el) => {
-    el.classList.remove("active");
-  });
-  e.target.classList.add("active");
-}
+let settingsManager = {
+  // settings box
+  initializeSettingsToggle: function () {
+    let settingsBox = document.querySelector(".settings-box .toggle-settings");
+    settingsBox.addEventListener("click", () => {
+      document.querySelector(".settings-box").classList.toggle("open");
+      document
+        .querySelector(".settings-box .fa-gear")
+        .classList.toggle("fa-spin");
+    });
+  },
+  setMainColor: function () {
+    let localColor = localStorage.getItem("mainColor");
+    if (localColor) {
+      document.documentElement.style.setProperty("--main-color", localColor);
+      document.querySelectorAll(".colors-list li").forEach((el) => {
+        el.classList.remove("active");
+      });
 
-function setMainColor() {
-  let localColor = localStorage.getItem("mainColor");
-  if (localColor) {
-    document.documentElement.style.setProperty("--main-color", localColor);
-    document.querySelectorAll(".colors-list li").forEach((el) => {
+      const activeElement = document.querySelector(
+        `[data-color="${localColor}"]`
+      );
+      if (activeElement) {
+        activeElement.classList.add("active");
+      }
+    }
+    // switch colors
+    let colorsLi = document.querySelector(".colors-list");
+    for (let i = 0; i < colorsLi.children.length; i++) {
+      const li = colorsLi.children[i];
+      li.addEventListener("click", (e) => {
+        // remove active from all
+        this.handleActiveClass(e);
+
+        document.documentElement.style.setProperty(
+          "--main-color",
+          `${li.dataset.color}`
+        );
+
+        localStorage.setItem("mainColor", li.dataset.color);
+      });
+    }
+    //swtich random background options
+    let randomBackEl = document.querySelectorAll(".random-backgrounds span");
+    randomBackEl.forEach((span) => {
+      span.addEventListener("click", (e) => {
+        this.handleActiveClass(e);
+
+        let randomize = e.target.classList.contains("yes");
+        changeBackground(randomize);
+      });
+    });
+  },
+
+  // bullets option function
+  handleBulletsOption: function () {
+    let allBulletSpan = document.querySelectorAll(".bullets-option span");
+    let bulletsContainer = document.querySelector(".nav-bullets");
+    let bulletsLocalStorage = localStorage.getItem("bulletsOption");
+    if (bulletsLocalStorage !== null) {
+      allBulletSpan.forEach((span) => {
+        span.classList.remove("active");
+      });
+      if (bulletsLocalStorage === "show") {
+        bulletsContainer.style.display = "block";
+
+        document.querySelector(".bullets-option .yes").classList.add("active");
+      } else {
+        bulletsContainer.style.display = "none";
+
+        document.querySelector(".bullets-option .no").classList.add("active");
+      }
+    }
+
+    allBulletSpan.forEach((span) => {
+      span.addEventListener("click", (e) => {
+        this.handleActiveClass(e);
+        if (e.target.dataset.display === "show") {
+          bulletsContainer.style.display = "block";
+        } else bulletsContainer.style.display = "none";
+
+        localStorage.setItem("bulletsOption", e.target.dataset.display);
+      });
+    });
+  },
+  // handle reset options button
+  resetOptions: function () {
+    let resetButton = document.querySelector(".reset-options");
+
+    resetButton.addEventListener("click", (e) => {
+      // reset color
+      localStorage.removeItem("mainColor");
+      // reset background option
+      localStorage.removeItem("randomizeBack");
+      // reset bullets option
+      localStorage.removeItem("bulletsOption");
+      window.location.reload();
+    });
+  },
+  // remove active classe function
+  handleActiveClass: function (e) {
+    e.target.parentElement.querySelectorAll(".active").forEach((el) => {
       el.classList.remove("active");
     });
-
-    const activeElement = document.querySelector(
-      `[data-color="${localColor}"]`
-    );
-    if (activeElement) {
-      activeElement.classList.add("active");
-    }
-  }
-  // switch colors
-  let colorsLi = document.querySelector(".colors-list");
-  for (let i = 0; i < colorsLi.children.length; i++) {
-    const li = colorsLi.children[i];
-    li.addEventListener("click", (e) => {
-      // remove active from all
-      handleActiveClass(e);
-
-      document.documentElement.style.setProperty(
-        "--main-color",
-        `${li.dataset.color}`
-      );
-
-      localStorage.setItem("mainColor", li.dataset.color);
-    });
-  }
-  //swtich random background options
-  let randomBackEl = document.querySelectorAll(".random-backgrounds span");
-  randomBackEl.forEach((span) => {
-    span.addEventListener("click", (e) => {
-      handleActiveClass(e);
-
-      let randomize = e.target.classList.contains("yes");
-      changeBackground(randomize);
-    });
-  });
-}
-setMainColor();
+    e.target.classList.add("active");
+  },
+};
 
 //change background
 let BackgroundInterval = 0;
@@ -124,7 +169,6 @@ function elementsOnScroll() {
     }
   };
 }
-elementsOnScroll();
 
 function popUpOnImages() {
   // create popup with the image
@@ -171,7 +215,6 @@ function popUpOnImages() {
     });
   });
 }
-popUpOnImages();
 
 // assign scroll to links and bullets
 function scrollOnClick(elements) {
@@ -186,58 +229,6 @@ function scrollOnClick(elements) {
     });
   });
 }
-scrollOnClick(document.querySelectorAll(".links li"));
-scrollOnClick(document.querySelectorAll(".nav-bullets .bullet"));
-
-// bullets option function
-function handleBulletsOption() {
-  let allBulletSpan = document.querySelectorAll(".bullets-option span");
-  let bulletsContainer = document.querySelector(".nav-bullets");
-  let bulletsLocalStorage = localStorage.getItem("bulletsOption");
-  if (bulletsLocalStorage !== null) {
-    allBulletSpan.forEach((span) => {
-      span.classList.remove("active");
-    });
-    if (bulletsLocalStorage === "show") {
-      bulletsContainer.style.display = "block";
-
-      document.querySelector(".bullets-option .yes").classList.add("active");
-    } else {
-      bulletsContainer.style.display = "none";
-
-      document.querySelector(".bullets-option .no").classList.add("active");
-    }
-  }
-
-  allBulletSpan.forEach((span) => {
-    span.addEventListener("click", (e) => {
-      handleActiveClass(e);
-      if (e.target.dataset.display === "show") {
-        bulletsContainer.style.display = "block";
-      } else bulletsContainer.style.display = "none";
-
-      localStorage.setItem("bulletsOption", e.target.dataset.display);
-    });
-  });
-}
-handleBulletsOption();
-
-// handle reset options button
-function resetOptions() {
-  let resetButton = document.querySelector(".reset-options");
-
-  resetButton.addEventListener("click", (e) => {
-    // reset color
-    localStorage.removeItem("mainColor");
-    // reset background option
-    localStorage.removeItem("randomizeBack");
-    // reset bullets option
-    localStorage.removeItem("bulletsOption");
-    window.location.reload();
-  });
-}
-
-resetOptions();
 
 // manage showing and hiding links container
 function toggleLinks() {
@@ -260,4 +251,12 @@ function toggleLinks() {
     }
   });
 }
+settingsManager.initializeSettingsToggle();
+settingsManager.setMainColor();
+settingsManager.handleBulletsOption();
+settingsManager.resetOptions();
+elementsOnScroll();
+popUpOnImages();
+scrollOnClick(document.querySelectorAll(".links li"));
+scrollOnClick(document.querySelectorAll(".nav-bullets .bullet"));
 toggleLinks();
