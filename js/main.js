@@ -120,7 +120,7 @@ function changeBackground(randomize) {
       document.querySelector(
         ".landing-page"
       ).style.cssText = `background-image:url(../imgs/0${randomNumber}.jpg)`;
-    }, 5000);
+    }, 10000);
     localStorage.setItem("randomizeBack", true);
   } else {
     clearInterval(BackgroundInterval);
