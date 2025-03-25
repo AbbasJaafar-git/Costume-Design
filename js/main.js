@@ -119,7 +119,7 @@ function changeBackground(randomize) {
       let randomNumber = Math.floor(Math.random() * 5) + 1;
       document.querySelector(
         ".landing-page"
-      ).style.cssText = `background-image:url(../imgs/0${randomNumber}.jpg)`;
+      ).style.cssText = `background-image:url(imgs/0${randomNumber}.jpg)`;
     }, 10000);
     localStorage.setItem("randomizeBack", true);
   } else {
