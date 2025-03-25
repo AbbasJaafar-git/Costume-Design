@@ -236,3 +236,21 @@ function resetOptions() {
 }
 
 resetOptions();
+
+//test
+let toggleMenu = document.querySelector(".header-area .links");
+
+document
+  .querySelector(".header-area .toggle-menu")
+  .addEventListener("click", (e) => {
+    toggleMenu.classList.toggle("open");
+  });
+document.querySelector(".landing-page").addEventListener("click", (e) => {
+  console.log(e.target.className);
+  if (
+    !e.target.classList.contains("toggle-menu") ||
+    !e.target.classList.contains("links") ||
+    !e.target.tagName === "span"
+  )
+    toggleMenu.classList.remove("open");
+});
