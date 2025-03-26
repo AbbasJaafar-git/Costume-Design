@@ -700,11 +700,10 @@ ul {
 /* Start Contact Us  */
 .contact {
   padding-top: var(--section-padding);
-  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
   background-image: url(../imgs/contact.png);
   background-size: cover;
   position: relative;
-  min-height: 600px;
 }
 .contact .overlay {
   position: absolute;
